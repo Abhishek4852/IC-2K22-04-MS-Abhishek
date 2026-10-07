@@ -16,5 +16,5 @@ This repository contains the practical implementations for the Multimedia System
    Contains scripts for analyzing and manipulating video content.
 4. **Cluster04-Voice-Cloning**
    Contains an ElevenLabs cloud API script to clone a custom voice and generate Text-to-Speech audio without local GPU requirement.
-5. **Cluster05-Image-Optimization**
-   Contains a script to optimize high-resolution images by reducing file size, resizing dimensions, stripping metadata, and converting formats (WebP/JPEG) while maintaining visual quality.
+5. **Cluster05-Image-Optimization-and-Text-Recognition**
+   Contains a script to optimize high-resolution images and perform robust Optical Character Recognition (OCR) to extract text, even from blurry or high-contrast images.
