@@ -1,2 +1,5 @@
 venv/
 .DS_Store
+viva_prep_temp/
+
+.env
