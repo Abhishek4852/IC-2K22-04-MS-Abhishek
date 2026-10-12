@@ -3,6 +3,44 @@ import requests
 from dotenv import load_dotenv
 
 
+def get_validated_text(prompt="\nEnter the text you want the AI to speak:\n> "):
+    """Validates user text input and re-prompts on invalid input."""
+    while True:
+        try:
+            val = input(prompt).strip()
+        except (KeyboardInterrupt, EOFError):
+            print("\nExiting...")
+            return None
+
+        if not val or not any(c.isalnum() for c in val):
+            print("❌ Invalid input! Please enter valid text.")
+            continue
+
+        return val
+
+
+def get_validated_reference_id(prompt="\nEnter Voice Reference ID (press Enter for normal AI voice):\n> "):
+    """Validates optional reference ID format and re-prompts on invalid input."""
+    while True:
+        try:
+            val = input(prompt).strip()
+        except (KeyboardInterrupt, EOFError):
+            print("\nExiting...")
+            return None
+
+        # Empty means normal AI voice (valid)
+        if not val:
+            return ""
+
+        # Validate reference ID: no spaces, alphanumeric with hyphens/underscores
+        clean_id = val.replace("-", "").replace("_", "")
+        if " " in val or not clean_id.isalnum():
+            print("❌ Invalid input! Please enter a valid Voice Reference ID (or press Enter for normal AI voice).")
+            continue
+
+        return val
+
+
 def main():
 
     print("=" * 60)
@@ -20,18 +58,15 @@ def main():
         print("FISH_API_KEY=your_api_key")
         return
 
-    # Get text
-    text = input("\nEnter the text you want the AI to speak:\n> ").strip()
-
-    if not text:
-        print("❌ Text is required.")
+    # Get text with validation
+    text = get_validated_text()
+    if text is None:
         return
 
-    # Optional reference voice
-    reference_id = input(
-        "\nEnter Voice Reference ID "
-        "(press Enter for normal AI voice):\n> "
-    ).strip()
+    # Optional reference voice with validation
+    reference_id = get_validated_reference_id()
+    if reference_id is None:
+        return
 
     # API
     url = "https://api.fish.audio/v1/tts"
@@ -74,7 +109,8 @@ def main():
             return
 
         # Save audio
-        output_file = "fish_audio_output.mp3"
+        output_dir = os.path.dirname(os.path.abspath(__file__))
+        output_file = os.path.join(output_dir, "fish_audio_output.mp3")
 
         with open(output_file, "wb") as f:
             f.write(response.content)
