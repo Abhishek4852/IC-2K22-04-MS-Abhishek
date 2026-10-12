@@ -156,7 +156,14 @@ def main():
     print("-" * 30)
 
     # Take image path from user
-    image_path = "/Users/sachinyaduwanshi/Desktop/mm_lab/Multimedia-Systems-Lab/Cluster02-Image-Processing/image_analyser.py"
+    if len(sys.argv) > 1:
+        image_path = sys.argv[1]
+    else:
+        image_path = input("Enter image path (or press Enter for default): ").strip()
+        if not image_path:
+            image_path = "/Users/sachinyaduwanshi/Desktop/mm_lab/Cluster01-Image-Processing/Screenshot 2026-08-24 at 9.40.58 PM.png"
+
+    analyze_image(image_path)
 
 
 if __name__ == "__main__":
